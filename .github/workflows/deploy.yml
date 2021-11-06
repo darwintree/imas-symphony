@@ -35,16 +35,12 @@ jobs:
     #   run: |
     #     python scripts/processIdolInfo.py
     # You can now access a variable indicating if there have been changes
-    - name: deploy
+    - name: build
       run: |
         npm run build
-        cd dist
-
-        git config --global user.email "17946284+darwintree@users.noreply.github.com"
-        git config --global user.name "七草葉月"
-        git init
-        git add -A
-        git commit -m 'deploy'
-        git branch -M gh-pages
-
-        git push -f git@github.com:darwintree/imas-symphony.git gh-pages
+        
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.COMMIT_SECRET }}
+        publish_dir: ./dist
