@@ -1,0 +1,50 @@
+name: Deploy
+on:   
+  push:
+  # schedule:
+  #   - cron: '30 9 * * *'
+
+jobs:
+  Deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: main
+    # - name: Fetch resource
+    #   env:
+    #     IDOL_INFO_URL: https://raw.githubusercontent.com/biuuu/shiny-image/master/idol-info.json
+    #     ICON_URL: https://raw.githubusercontent.com/biuuu/shiny-image/master/icon-info.json
+    #   run: |
+    #     wget $IDOL_INFO_URL -O public/assets/config/idol/idol-info.json
+    #     wget $ICON_URL -O public/assets/config/idol/icon-info.json
+    
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '14.x'
+    - name: Install dependencies
+      # if: steps.changes.outputs.changed == 1
+      run: |
+        npm install
+    # - name: Check if there are changes
+    #   id: changes
+    #   uses: UnicornGlobal/has-changes-action@v1.0.11
+    
+    # - name: Process idol info
+    #   run: |
+    #     python scripts/processIdolInfo.py
+    # You can now access a variable indicating if there have been changes
+    - name: deploy
+      run: |
+        npm run build
+        cd dist
+
+        git config --global user.email "17946284+darwintree@users.noreply.github.com"
+        git config --global user.name "七草葉月"
+        git init
+        git add -A
+        git commit -m 'deploy'
+        git branch -M gh-pages
+
+        git push -f git@github.com:darwintree/imas-symphony.git gh-pages
