@@ -1,8 +1,8 @@
 <template>
   <n-space justify="center" align="center">
     <n-image :src="img" width="104"></n-image>
-    <n-tag type="success" v-if="volume > 0">{{keyName}}</n-tag>
-    <n-tag v-else>{{keyName}}</n-tag>
+    <n-button type="success" v-if="volume > 0" @click="changeStatus">{{keyName}}</n-button>
+    <n-button v-else @click="changeStatus">{{keyName}}</n-button>
     <audio :src="src" ref="audio" :muted="muted" :volume="volume" controls></audio>
   </n-space>
   <!-- <div>hello</div> -->
@@ -21,6 +21,9 @@ export default {
     },
     setCurrentTime(i) {
       this.$refs.audio.currentTime = i
+    },
+    changeStatus() {
+      this.$root.changeStatus(parseInt(this.id))
     }
   },
   watch: {

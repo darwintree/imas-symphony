@@ -58,6 +58,12 @@ export default {
         this.$refs[`audio${i}`].setCurrentTime(player.getCurrentTime());
       }
     },
+    changeStatus(i) {
+      if (i && this.volumeList[i] == 1) {
+        this.sync(i);
+      }
+      this.volumeList[i] = 1 - this.volumeList[i];
+    }
   },
   mounted() {
     this.$nextTick(() => {
@@ -67,10 +73,11 @@ export default {
       for (let i = 0; i < this.trackSrc.length; i += 1) {
         key(`${this.keys[i]}`, () => {
           // console.log(event.type);
-          if (i && this.volumeList[i] == 1) {
-            this.sync(i);
-          }
-          this.volumeList[i] = 1 - this.volumeList[i];
+          // if (i && this.volumeList[i] == 1) {
+          //   this.sync(i);
+          // }
+          // this.volumeList[i] = 1 - this.volumeList[i];
+          this.changeStatus(i)
 
           // else{
           //   this.volumeList[i] = 0;
